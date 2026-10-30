@@ -24,7 +24,7 @@
 <header class="top"><div class="logo">FRUIT <span>ADVENTURE</span></div><div class="pill">✨ BETA 01</div></header>
 <section class="hero"><h1>FRUIT ADVENTURE</h1><p>Match fruits, earn points, and conquer all 5 stages!</p></section>
 <section class="stats">
-<div class="stat"><label>Stage</label><strong id="stage">1</strong></div>
+<div class="stat"><label>Level</label><strong id="stage">1</strong></div>
 <div class="stat"><label>Score</label><strong id="score">0</strong></div><div class="stat"><label>Best</label><strong id="best">0</strong></div>
 <div class="stat"><label>Target</label><strong id="target">500</strong></div>
 <div class="stat"><label>Moves left</label><strong id="moves">30</strong></div>
@@ -93,7 +93,7 @@ function say(s){$('hint').textContent=s}
 
 function updateStats(){
  const config=STAGES[stage];
- $('stage').textContent=stage+1;
+ $('stage').textContent='LEVEL '+(stage+1);
  $('score').textContent=score;
  $('target').textContent=config.target;
  $('moves').textContent=moves;
@@ -226,7 +226,7 @@ function start(){
  updateStats();
  newBoard();
 
- say('Stage '+(stage+1)+': '+STAGES[stage].name+
+ say('Level '+(stage+1)+': '+STAGES[stage].name+
      '. Match fruits to reach '+STAGES[stage].target+' points!');
 
  interval=setInterval(()=>{
@@ -249,10 +249,10 @@ function winStage(){
   $('playagain').textContent='Play again';
   say('Congratulations! You conquered Fruit Adventure!');
  }else{
-  $('endtitle').textContent='Stage completed! 🎉';
-  $('endmsg').textContent='You completed Stage '+(stage+1)+
-   '! Get ready for Stage '+(stage+2)+'.';
-  $('playagain').textContent='Next stage';
+  $('endtitle').textContent='LEVEL COMPLETED! 🎉';
+  $('endmsg').textContent='You completed Level '+(stage+1)+
+   '! Get ready for Level '+(stage+2)+'.';
+  $('playagain').textContent='Next level';
   say('Excellent! You unlocked the next stage.');
  }
 
@@ -265,13 +265,13 @@ function end(won){
  playing=false;
  stopTimer();
 
- $('endtitle').textContent='Stage failed!';
+ $('endtitle').textContent='LEVEL FAILED!';
  $('endmsg').textContent='You scored '+score+
   ' points. You needed '+STAGES[stage].target+
   ' points. Try again!';
  $('playagain').textContent='Try again';
  $('overlay').style.display='flex';
- say('Stage over. Try again!');
+ say('Level over. Try again!');
 }
 
 function nextStage(){
