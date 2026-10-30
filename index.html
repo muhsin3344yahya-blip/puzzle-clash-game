@@ -39,7 +39,7 @@
 <div id="overlay" class="overlay"><div class="modal"><h2 id="endtitle">Time's up!</h2><p id="endmsg">Nice puzzle solving!</p><button class="btn primary" id="playagain">Play again</button></div></div>
 <script>
 (()=>{
-const N=8, TYPES=6, ICONS=['♥','★','●','◆','✦','⬟'];
+const N=8, TYPES=6, ICONS=['🍎','🍌','🍍','🍊','🍇','🍓'];
 let cells=[],selected=-1,score=0,time=60,playing=true,interval=null,best=0,challenge=false,busy=false;
 const $=id=>document.getElementById(id),board=$('board');
 try{best=Number(localStorage.getItem('pc_best')||0)}catch(e){} $('best').textContent=best;
