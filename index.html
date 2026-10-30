@@ -23,12 +23,18 @@
 </style></head><body><main class="app">
 <header class="top"><div class="logo">FRUIT <span>ADVENTURE</span></div><div class="pill">✨ BETA 01</div></header>
 <section class="hero"><h1>FRUIT ADVENTURE</h1><p>Match fruits, earn points, and conquer all 5 stages!</p></section>
-<section class="stats"><div class="stat"><label>Score</label><strong id="score">0</strong></div><div class="stat"><label>Best</label><strong id="best">0</strong></div><div class="stat"><label>Time left</label><strong id="time">60</strong></div></section>
+<section class="stats">
+<div class="stat"><label>Stage</label><strong id="stage">1</strong></div>
+<div class="stat"><label>Score</label><strong id="score">0</strong></div>
+<div class="stat"><label>Target</label><strong id="target">500</strong></div>
+<div class="stat"><label>Moves left</label><strong id="moves">30</strong></div>
+<div class="stat"><label>Time left</label><strong id="time">90</strong></div>
+</section>
 <div class="timerbar"><div id="timerfill" class="timerfill"></div></div>
 <div class="board-wrap"><div id="board" class="board" aria-label="Puzzle board"></div></div>
 <div id="hint" class="hint">Tap a tile, then tap a neighbor to swap.</div>
 <div class="actions"><button class="btn primary" id="restart">↻ Restart game</button><button class="btn" id="challenge">⚡ Challenge mode</button></div>
-<div class="foot">PUZZLE CLASH • FIRST PLAYABLE PROTOTYPE</div>
+<div class="foot">FRUIT ADVENTURE • 5 STAGES</div>
 </main>
 <div id="overlay" class="overlay"><div class="modal"><h2 id="endtitle">Time's up!</h2><p id="endmsg">Nice puzzle solving!</p><button class="btn primary" id="playagain">Play again</button></div></div>
 <script>
