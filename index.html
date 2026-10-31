@@ -31,7 +31,17 @@
 <div class="stat"><label>Time left</label><strong id="time">90</strong></div>
 </section>
 <div class="timerbar"><div id="timerfill" class="timerfill"></div></div>
-<div class="board-wrap"><div id="board" class="board" aria-label="Puzzle board"></div></div>
+
+<div id="welcomeScreen" style="position:fixed;inset:0;background:#241052;z-index:10;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center;">
+  <div style="background:#7045c5;padding:30px 20px;border-radius:24px;width:100%;max-width:350px;color:white;">
+    <h1>🍎 FRUIT ADVENTURE 🍓</h1>
+    <p>Welcome! How would you like to play?</p>
+    <button id="guestButton" class="btn primary" style="width:100%;margin:10px 0;">Play as Guest</button>
+    <button id="accountButton" class="btn" style="width:100%;margin:10px 0;">Create Account / Sign In</button>
+  </div>
+</div>
+
+  <div class="board-wrap"><div id="board" class="board" aria-label="Puzzle board"></div></div>
 <div id="hint" class="hint">Tap a tile, then tap a neighbor to swap.</div>
 <div class="actions"><button class="btn primary" id="restart">↻ Restart game</button><button class="btn" id="challenge">⚡ Challenge mode</button></div>
 <div class="foot">FRUIT ADVENTURE • 5 STAGES</div>
@@ -304,7 +314,14 @@ $('challenge').onclick=()=>{
  $('challenge').textContent=challenge?'⚡ Classic mode':'⚡ Challenge mode';
  say(challenge?'Challenge mode selected!':'Classic mode selected!');
 };
+$('guestButton').onclick=()=>{
+  $('welcomeScreen').style.display='none';
+  start();
+};
 
+$('accountButton').onclick=()=>{
+  alert('Account registration is coming soon!');
+};
 start();
 })();
 
