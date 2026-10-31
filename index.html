@@ -401,7 +401,10 @@ $('signupButton').onclick=async()=>{
 
   const {data,error}=await supabaseClient.auth.signUp({
     email:email,
-    password:password
+    password:password,
+    options:{
+      emailRedirectTo:'https://muhsin3344yahya-blip.github.io/puzzle-clash-game/'
+    }
   });
 
   if(error){
