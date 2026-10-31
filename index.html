@@ -426,12 +426,20 @@ $('loginButton').onclick=async()=>{
     password:password
   });
 
-  if(error){
+    if(error){
     $('accountMessage').textContent=error.message;
     return;
   }
 
-  $('accountMessage').textContent='Sign in successful! Welcome back!';
+  $('accountMessage').textContent='Welcome back! Loading your game...';
+
+  $('welcomeScreen').style.display='none';
+
+  if(loadProgress()){
+    start(true);
+  }else{
+    start();
+  }
 };
   say('Choose how you would like to play.');
 })();
