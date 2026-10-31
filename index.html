@@ -38,6 +38,13 @@
     <p>Welcome! How would you like to play?</p>
     <button id="guestButton" class="btn primary" style="width:100%;margin:10px 0;">Play as Guest</button>
     <button id="accountButton" class="btn" style="width:100%;margin:10px 0;">Create Account / Sign In</button>
+  <div id="accountForm" style="display:none;margin-top:15px;">
+  <input id="accountEmail" type="email" placeholder="Enter your email" style="width:100%;padding:12px;margin:8px 0;border-radius:8px;">
+  <input id="accountPassword" type="password" placeholder="Enter your password" style="width:100%;padding:12px;margin:8px 0;border-radius:8px;">
+  <button id="signupButton" class="btn primary" style="width:100%;margin:8px 0;">Create Account</button>
+  <button id="loginButton" class="btn" style="width:100%;margin:8px 0;">Sign In</button>
+  <p id="accountMessage"></p>
+</div>
   </div>
 </div>
 
@@ -383,10 +390,47 @@ $('guestButton').onclick=()=>{
 };
 
 $('accountButton').onclick=()=>{
-  alert('Account registration is coming soon!');
+  $('accountForm').style.display='block';
+  $('accountButton').style.display='none';
 };
-  
-say('Choose how you would like to play.');
+$('signupButton').onclick=async()=>{
+  const email=$('accountEmail').value.trim();
+  const password=$('accountPassword').value;
+
+  $('accountMessage').textContent='Creating your account...';
+
+  const {data,error}=await supabaseClient.auth.signUp({
+    email:email,
+    password:password
+  });
+
+  if(error){
+    $('accountMessage').textContent=error.message;
+    return;
+  }
+
+  $('accountMessage').textContent=
+    'Account created! Check your email to confirm your account.';
+};  
+$('loginButton').onclick=async()=>{
+  const email=$('accountEmail').value.trim();
+  const password=$('accountPassword').value;
+
+  $('accountMessage').textContent='Signing in...';
+
+  const {data,error}=await supabaseClient.auth.signInWithPassword({
+    email:email,
+    password:password
+  });
+
+  if(error){
+    $('accountMessage').textContent=error.message;
+    return;
+  }
+
+  $('accountMessage').textContent='Sign in successful! Welcome back!';
+};
+  say('Choose how you would like to play.');
 })();
 
 </script></body></html>
