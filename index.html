@@ -75,8 +75,54 @@ const $=id=>document.getElementById(id);
 const board=$('board');
 
 try{best=Number(localStorage.getItem('pc_best')||0)}catch(e){}
+function saveProgress(){
+  const progress={
+    stage:stage,
+    score:score,
+    time:time,
+    moves:moves,
+    best:best,
+    cells:cells,
+    playing:playing
+  };
 
-function rand(){return Math.floor(Math.random()*TYPES)}
+  try{
+    localStorage.setItem('fruit_adventure_save',JSON.stringify(progress));
+  }catch(e){}
+}
+function loadProgress(){
+  try{
+    const saved=JSON.parse(localStorage.getItem('fruit_adventure_save'));
+
+    if(!saved || !Array.isArray(saved.cells) || saved.cells.length!==64){
+      return false;
+    }
+
+    if(saved.stage<0 || saved.stage>4){
+      return false;
+    }
+
+    if(!saved.cells.every(v=>Number.isInteger(v) && v>=0 && v<TYPES)){
+      return false;
+    }
+
+    stage=saved.stage;
+    score=saved.score;
+    time=saved.time;
+    moves=saved.moves;
+    best=saved.best;
+    cells=saved.cells;
+    playing=true;
+    busy=false;
+    finished=false;
+    selected=-1;
+
+    return true;
+  }catch(e){
+    return false;
+  }
+}
+  function rand(){return Math.floor(Math.random()*TYPES)}
 
 function createsMatch(a,i){
  let x=i%N,y=Math.floor(i/N),v=a[i];
@@ -123,6 +169,8 @@ function updateStats(){
   $('best').textContent=best;
   try{localStorage.setItem('pc_best',best)}catch(e){}
  }
+ saveProgress();
+
 }
 
 function tap(i){
@@ -227,21 +275,30 @@ function stopTimer(){
  interval=null;
 }
 
-function start(){
+function start(resume=false){
  stopTimer();
- finished=false;
- score=0;
- time=STAGES[stage].time;
- moves=STAGES[stage].moves;
- playing=true;
- busy=false;
- selected=-1;
+
+ if(!resume){
+  finished=false;
+  score=0;
+  time=STAGES[stage].time;
+  moves=STAGES[stage].moves;
+  playing=true;
+  busy=false;
+  selected=-1;
+  newBoard();
+ }else{
+  finished=false;
+  playing=true;
+  busy=false;
+  selected=-1;
+  render();
+ }
 
  $('overlay').style.display='none';
  $('playagain').textContent='Play again';
 
  updateStats();
- newBoard();
 
  say('Level '+(stage+1)+': '+STAGES[stage].name+
      '. Match fruits to reach '+STAGES[stage].target+' points!');
@@ -253,7 +310,6 @@ function start(){
   if(time<=0)end(false);
  },1000);
 }
-
 function winStage(){
  if(finished)return;
  finished=true;
@@ -316,7 +372,13 @@ $('challenge').onclick=()=>{
 };
 $('guestButton').onclick=()=>{
   $('welcomeScreen').style.display='none';
-  start();
+
+  if(loadProgress()){
+    start(true);
+    say('Welcome back! Your saved game has been restored.');
+  }else{
+    start();
+  }
 };
 
 $('accountButton').onclick=()=>{
