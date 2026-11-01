@@ -82,6 +82,10 @@ const $=id=>document.getElementById(id);
 const board=$('board');
 
 try{best=Number(localStorage.getItem('pc_best')||0)}catch(e){}
+
+let saveTimer=null;
+let pendingAccountProgress=null;
+
 function saveProgress(){
   const progress={
     stage:stage,
@@ -96,7 +100,43 @@ function saveProgress(){
   try{
     localStorage.setItem('fruit_adventure_save',JSON.stringify(progress));
   }catch(e){}
+
+  pendingAccountProgress=progress;
+
+  if(!saveTimer){
+    saveTimer=setTimeout(()=>{
+      saveTimer=null;
+      if(pendingAccountProgress){
+        saveAccountProgress(pendingAccountProgress);
+      }
+    },5000);
+  }
 }
+
+async function saveAccountProgress(progress){
+  try{
+    const {data:{user},error:authError}=await supabaseClient.auth.getUser();
+
+    if(authError || !user){
+      return;
+    }
+
+    const {error}=await supabaseClient
+      .from('player_progress')
+      .upsert({
+        user_id:user.id,
+        current_level:progress.stage+1,
+        best_score:progress.best,
+        game_state:progress
+      });
+
+    if(error){
+      console.log('Account save error:',error.message);
+    }
+  }catch(e){
+    console.log('Account save error:',e.message);
+  }
+}  
 function loadProgress(){
   try{
     const saved=JSON.parse(localStorage.getItem('fruit_adventure_save'));
