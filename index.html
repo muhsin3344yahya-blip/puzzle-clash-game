@@ -466,12 +466,34 @@ $('loginButton').onclick=async()=>{
     password:password
   });
 
-    if(error){
+  if(error){
     $('accountMessage').textContent=error.message;
     return;
   }
 
-  $('accountMessage').textContent='Welcome back! Loading your game...';
+  $('accountMessage').textContent='Loading your saved game...';
+
+  const user=data.user;
+
+  const {data:cloudData,error:cloudError}=await supabaseClient
+    .from('player_progress')
+    .select('game_state')
+    .eq('user_id',user.id)
+    .maybeSingle();
+
+  if(cloudError){
+    $('accountMessage').textContent='Could not load cloud progress: '+cloudError.message;
+    return;
+  }
+
+  if(cloudData && cloudData.game_state){
+    try{
+      localStorage.setItem(
+        'fruit_adventure_save',
+        JSON.stringify(cloudData.game_state)
+      );
+    }catch(e){}
+  }
 
   $('welcomeScreen').style.display='none';
 
